@@ -1,0 +1,27 @@
+trigger: none
+ 
+resources:
+ pipelines:
+   - pipeline: MyCIPipeline
+     source: Pipeline1
+     trigger:
+      branches:
+       include:
+         - master
+ 
+stages:
+- stage: Production
+  displayName: Production 
+  jobs: 
+  - deployment: Deployment
+    displayName: Deploy
+    pool: 
+      name: default
+    environment: ashkirEnv
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - download: MyCIPipeline
+          - script: echo Hello, world!
+            displayName: 'Trial'
